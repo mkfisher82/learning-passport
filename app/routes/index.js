@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var passport_config = require('../config/passport');
 
 
 router.use(passport.initialize());
