@@ -9,7 +9,7 @@ var GitHubStrategy = require('passport-github').Strategy;
 var mongoose = require('mongoose');
 
 var User = require('./app/models/user');
-// var index = require('./routes/index');
+var index = require('./app/routes/index');
 // var users = require('./routes/users');
 
 var app = express();
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', index);
+app.use('/', index);
 // app.use('/users', users);
 
 //Set up mongoose connection
@@ -43,8 +43,6 @@ db.once('open', function () {
 
 
 // Passport set-up and routes here.
-app.use(passport.initialize());
-
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
@@ -91,27 +89,6 @@ passport.use(new GitHubStrategy({
   }
 ));
 
-app.get('/auth/github',
-  passport.authenticate('github'));
-
-app.get('/auth/github/callback',
-  passport.authenticate('github', { successRedirect: '/success',
-                                    failureRedirect: '/failure'})
-
-  );
-
-/* GET home page. */
-app.get('/', function(req, res) {
-    res.render('index', { title: 'Express' });
-});
-
-app.get('/failure', function(req, res) {
-    res.render('failure');
-});
-
-app.get('/success', function(req, res) {
-    res.render('success');
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
