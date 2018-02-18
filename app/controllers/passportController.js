@@ -1,6 +1,4 @@
 var passport = require('passport');
-var passport_config = require('../config/passport');
-
 
 // from /auth/github
 exports.auth_github = passport.authenticate('github');
