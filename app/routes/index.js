@@ -2,18 +2,14 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var passport_config = require('../config/passport');
+var passport_controller = require('../controllers/passportController');
 
 
 router.use(passport.initialize());
 
-router.get('/auth/github',
-  passport.authenticate('github'));
+router.get('/auth/github', passport_controller.auth_github);
 
-router.get('/auth/github/callback',
-  passport.authenticate('github', { successRedirect: '/success',
-                                    failureRedirect: '/failure'})
-
-  );
+router.get('/auth/github/callback', passport_controller.auth_github_callback);
 
 router.get('/', function(req, res) {
     res.render('index', { title: 'Express' });
