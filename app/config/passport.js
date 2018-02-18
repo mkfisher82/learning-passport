@@ -1,6 +1,7 @@
 var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var User = require('../models/user');
+require('dotenv').config();
 
 // Passport set-up here.
 passport.serializeUser(function (user, done) {
@@ -14,12 +15,12 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(new GitHubStrategy({
-    clientID: '84663f1ca58bb184cc5f',
-    clientSecret: '7e296dc502af6ef6a6c29ed18e3c9880dd0895e6',
+    clientID: process.env.GITHUB_KEY,
+    clientSecret: process.env.GITHUB_SECRET,
     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-      console.log(accessToken + ':' + profile);
+      
       User.findOne({ 'github.id': profile.id }, function (err, user) {
           console.log(user);
           if (err) {
