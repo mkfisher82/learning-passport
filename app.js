@@ -5,14 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var passport = require('passport');
 var session = require('express-session');
-
-var User = require('./app/models/user');
-var index = require('./app/routes/index');
-// var users = require('./routes/users');
 
 var app = express();
 require('dotenv').config();
+
+var User = require('./app/models/user');
+var passport_config = require('./app/config/passport')(passport);
+var index = require('./app/routes/index')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'public/views'));
@@ -26,8 +27,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Set up session
+app.use(session({
+	secret: 'secretClementine',
+	resave: false,
+	saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', index);
-// app.use('/users', users);
 
 //Set up mongoose connection
 var mongoose = require('mongoose');
