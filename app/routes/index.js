@@ -9,6 +9,10 @@ module.exports = function(passport) {
 
 	router.get('/auth/github/callback', passport_controller(passport).auth_github_callback);
 
+	router.get('/auth/facebook', passport_controller(passport).auth_facebook);
+
+	router.get('/auth/facebook/callback', passport_controller(passport).auth_facebook_callback);
+
 	router.get('/', function(req, res) {
 	    res.render('index', { title: 'Express' });
 	});
@@ -22,5 +26,7 @@ module.exports = function(passport) {
 	    res.render('success');
 	});
 
+	router.get('/home', passport_controller(passport).get_home);
+	
 	return router;
 }
